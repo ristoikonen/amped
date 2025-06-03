@@ -23,7 +23,8 @@ const schema = a.schema({
       createdAt: a.timestamp(), 
       updatedAt: a.timestamp(), 
     })
-    .authorization((allow) => [allow.publicApiKey()]),
+    .authorization((allow) => [allow.publicApiKey(),allow.guest()]),
+    
 });
 
 export type Schema = ClientSchema<typeof schema>;

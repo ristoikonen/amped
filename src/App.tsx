@@ -3,15 +3,17 @@ import './App.css'
 import { Amplify } from 'aws-amplify';
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
-
+import outputs from '../amplify_outputs.json'; 
 import { SwitchField, Input, Label, Card, Flex, Text, Heading, Image, 
   View, Button, useTheme } from '@aws-amplify/ui-react';
 
  // import { IconsProvider, Rating } from '@aws-amplify/ui-react';
 
+ // Not Authorized to access createFunk on type Mutation
 
-// Configure Amplify before generating the client
-Amplify.configure({
+ Amplify.configure(outputs);
+ 
+/* Amplify.configure({
   // Configure API (GraphQL/Data)
   API: {
     GraphQL: {
@@ -21,6 +23,18 @@ Amplify.configure({
     }
   }
 });
+ */
+
+/* Amplify.configure({
+  // Configure API (GraphQL/Data)
+  API: {
+    GraphQL: {
+      endpoint: '/graphql',
+      defaultAuthMode: 'apiKey',
+      apiKey: 'dummy-api-key'
+    }
+  }
+}); */
 
 const client = generateClient<Schema>();
 
@@ -52,16 +66,30 @@ interface Funk {
 
 }
 
-//const { data: funksters } = await client.models.Funk.list();
+const doit  = async () => {
+  try {
+    // Data to be sent. Compare this with the data in the 'Create' function.
+    // If 'Create' works, 'doit' might be missing required fields.
+    const funkDataForDoit = {content: "aha", name: 1, rate: 1, per: 1, nper: 1, 
+    pmt: 1, fv: 1, pv: 1, guess: 1, isDueEnd: true};
 
+    console.log("Attempting to create Funk via 'doit' with data:", funkDataForDoit);
+    const { data: newFunk, errors } = await client.models.Funk.create(funkDataForDoit);
 
-const doit  = async () => {await client.models.Funk.create({
-  content: "My new funkster",
-})};
+    if (errors) {
+      console.error("Error creating Funk in 'doit' function:", errors);
+      // alert(`Error: ${errors.map(e => e.message).join(', ')}`); // Optional: for UI feedback
+      return;
+    }
+    console.log("New Funk created successfully via 'doit':", newFunk);
+  } catch (error) {
+    console.error("An unexpected error occurred in 'doit' function:", error);
+  }
+};
 
 async function createFunk(funkData: Omit<Funk, 'id'>) {
   try {
-    console.log("Create Funk called " + funksters.length);
+    
     //console.log("New Funk startrted:" + funkData.pv);
     const { data: newFunk, errors } = await client.models.Funk.create(funkData);
     if (errors) {
@@ -76,7 +104,6 @@ async function createFunk(funkData: Omit<Funk, 'id'>) {
 
 async function Create() : Promise<void>
 {
-  // id: "aha", 
   console.log("Create() called ");
   await createFunk( {content: "aha", name: 1, rate: 1, per: 1, nper: 1, 
     pmt: 1, fv: 1, pv: 1, guess: 1, isDueEnd: true} );
@@ -170,6 +197,15 @@ function App() {
                 Calculate
               </Button>
            
+          
+              <Button
+                shrink="0"
+                /* size="Default" */
+                isDisabled={false}
+                onClick={Create}
+              >
+                Create
+              </Button>
 
               <Flex direction="row" gap="small" width="280px"  >
                 <SwitchField
