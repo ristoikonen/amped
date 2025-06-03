@@ -1,12 +1,29 @@
-//import { useState } from 'react'
-
+//import React, { useState } from 'react'
 import './App.css'
-//import React from 'react';
+import { Amplify } from 'aws-amplify';
+import { generateClient } from "aws-amplify/data";
+import type { Schema } from "../amplify/data/resource";
+
 import { SwitchField, Input, Label, Card, Flex, Text, Heading, Image, 
   View, Button, useTheme } from '@aws-amplify/ui-react';
 
  // import { IconsProvider, Rating } from '@aws-amplify/ui-react';
-//import { FiStar } from 'react-icons/fi';
+
+
+// Configure Amplify before generating the client
+Amplify.configure({
+  // Configure API (GraphQL/Data)
+  API: {
+    GraphQL: {
+      endpoint: import.meta.env.VITE_API_URL || '/graphql',
+      defaultAuthMode: 'apiKey',
+      apiKey: import.meta.env.VITE_API_KEY
+    }
+  }
+});
+
+const client = generateClient<Schema>();
+
 
 //import products_data from './data/products'
 
@@ -19,13 +36,64 @@ import { SwitchField, Input, Label, Card, Flex, Text, Heading, Image,
 
 //import Stat from './Stat';
 //import LogoWithText from './LogoWithText';
-    
+
+interface Funk {
+  id: string; 
+  content?: string;
+  name?: number,
+  rate?: number,
+  per?:  number,
+  nper?:  number,
+  pmt?:  number,
+  fv?: number,
+  pv?:  number,
+  guess?: number,
+  isDueEnd?: boolean,
+
+}
+
+//const { data: funksters } = await client.models.Funk.list();
+
+
+const doit  = async () => {await client.models.Funk.create({
+  content: "My new funkster",
+})};
+
+async function createFunk(funkData: Omit<Funk, 'id'>) {
+  try {
+    console.log("Create Funk called " + funksters.length);
+    //console.log("New Funk startrted:" + funkData.pv);
+    const { data: newFunk, errors } = await client.models.Funk.create(funkData);
+    if (errors) {
+      console.error("Error creating Funk:", errors);
+      return;
+    }
+    console.log("New Funk created:", newFunk);
+  } catch (error) {
+    console.error("Unexpected error:", error);
+  }
+}
+
+async function Create() : Promise<void>
+{
+  // id: "aha", 
+  console.log("Create() called ");
+  await createFunk( {content: "aha", name: 1, rate: 1, per: 1, nper: 1, 
+    pmt: 1, fv: 1, pv: 1, guess: 1, isDueEnd: true} );
+
+}
+
 
 
 function App() {
   //const [products, setProducts] = useState(products_data)
   const { tokens } = useTheme();
 
+  
+
+  //const ct = client.models.Funk.create().id;    
+  //const ct = "aha" + client.models.Funk.create().id;
+  //const ct = client.models.Funk.list.length;
   return (
     <>
 
@@ -97,6 +165,7 @@ function App() {
                 shrink="0"
                 /* size="Default" */
                 isDisabled={false}
+                onClick={doit}
               >
                 Calculate
               </Button>
