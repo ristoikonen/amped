@@ -11,7 +11,7 @@ import {  SwitchField, Input, Label, Card, Flex, Text, Heading, Image,
  // import { IconsProvider, Rating } from '@aws-amplify/ui-react';
 //import { FiStar } from 'react-icons/fi';
 
-import products_data from './data/products'
+//import products_data from './data/products'
 
 //import iconsourcecodehover from './assets/ikons.svg'
 /* import {
@@ -33,7 +33,7 @@ function App() {
     <>
       <div >
 
-  <Card backgroundColor="white" 
+      <Card backgroundColor="white" 
         width="1241px" 
         fontWeight={tokens.fontWeights.medium} 
         fontSize={tokens.fontSizes.medium}

@@ -2,13 +2,13 @@ import { useState } from 'react'
 
 import './App.css'
 //import React from 'react';
-import { Message, Badge, SwitchField, SelectField, TextField, Input, Label, Card, Collection,Flex, Text, Heading, Image, 
-  View, Divider, Button, useTheme } from '@aws-amplify/ui-react';
+import { SwitchField, Input, Label, Card, Flex, Text, Heading, Image, 
+  View, Button, useTheme } from '@aws-amplify/ui-react';
 
  // import { IconsProvider, Rating } from '@aws-amplify/ui-react';
 //import { FiStar } from 'react-icons/fi';
 
-import products_data from './data/products'
+//import products_data from './data/products'
 
 //import iconsourcecodehover from './assets/ikons.svg'
 /* import {
@@ -23,14 +23,14 @@ import products_data from './data/products'
 
 
 function App() {
-  const [products, setProducts] = useState(products_data)
+  //const [products, setProducts] = useState(products_data)
   const { tokens } = useTheme();
 
   return (
     <>
-      <div >
 
-  <Card backgroundColor="white" 
+    <View>
+      <Card backgroundColor="white" 
         width="1241px" 
         fontWeight={tokens.fontWeights.medium} 
         fontSize={tokens.fontSizes.medium}
@@ -113,10 +113,10 @@ function App() {
             </Flex>
 
           </Flex>
-  </Card>
+        </Card>
 
 
-    <Card backgroundColor="azure" 
+        <Card backgroundColor="azure" 
           width="1241px"
           fontSize={tokens.fontSizes.large}
           fontWeight={tokens.fontWeights.semibold}
@@ -159,24 +159,23 @@ function App() {
         </Flex>
       </Card>
   
-<br/>
-<Flex direction="column" alignItems="center"  width="561px"
+      <br/>
+        
+      <Flex direction="column" alignItems="center"  width="561px"
               height="82px"
               alignContent="center"
               gap="11rem"
               >
-      <label htmlFor="tac">
+        <label htmlFor="tac">
         <input id="tac" type="checkbox" name="terms-and-conditions" />
         I agree to the Terms and Conditions
          <span><a href="terms-and-conditions.html"> Read our Terms and Conditions</a></span></label>
-      
     
-       
-      
-</Flex>
-      </div>
-      
-      
+        </Flex>
+
+
+      </View>
+     
     </>
   )
 }
